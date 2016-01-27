@@ -1,0 +1,11 @@
+{
+  "name": "house_management",
+  "version": "0.0.1",
+  "description": "Web App for tracking payments for your apartment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dmitry Yudakov <dmitry.yudakov@gmail.com>",
+  "license": "MIT"
+}
