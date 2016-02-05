@@ -69,13 +69,18 @@ var MakePayment = React.createClass({
 		});
 	},
 	render: function() {
+		var header = (<h2>Направи ново плащане</h2>);
 		if(!this.props.ap) {
-			return ( 
-				<div>No apartment selected</div> 
+			return (
+				<div>
+					{header}
+					<div>No apartment selected</div>
+				</div>
 			);
 		}
 		return (
 			<form onSubmit={this.handleSubmit}>
+				{header}
 				<span>Ап {this.props.ap.number}: {this.props.ap.name}</span>
 				<br/>
 				<span>Сума:</span>
@@ -162,6 +167,64 @@ var ApartmentsBox = React.createClass({
 	}
 });
 
+var ModifyApartment = React.createClass({
+	getInitialState: function() {
+		return {
+			name: '',
+			number: '',
+			initial_balanse: 0
+		}
+	},
+	handleSetNumber: function(e){
+		console.log('set number',e.target.value);
+		this.setState({number: e.target.value})
+	},
+	handleSetName: function(e){
+		console.log('set name',e.target.value);
+		this.setState({name: e.target.value})
+	},
+	handleSetInitialBalanse: function(e){
+		console.log('set init bal',e.target.value);
+		this.setState({initial_balanse: e.target.value})
+	},
+	handleSubmit: function(e) {
+		e.preventDefault();
+		var data = {
+			number: this.state.number,
+			name: this.state.name,
+			initial_balanse: this.state.initial_balanse
+		};
+		console.log('Send payment:', data);
+		$.ajax('/api/modify_apartment', {
+			cache: false,
+			dataType: 'json',
+			type: 'POST',
+			data: data,
+			success: function(data) {
+				console.log('Adding apartment result:', data);
+				this.setState({name: '', number: '', initial_balanse: 0, result: data.result});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
+	render: function() {
+		return (
+			<form onSubmit={this.handleSubmit}>
+				<h2>Добави нов апартамент</h2>
+				Номер: <input type="text" name="number" require="true" onChange={this.handleSetNumber}/>
+				<br/>
+				Име: <input type="text" name="name" require="true" onChange={this.handleSetName}/>
+				<br/>
+				Начален Баланс:<input type="text" name="initial_balanse" require="true" onChange={this.handleSetInitialBalanse}/> лв.
+				<br/>
+				<input type="submit" value="Добави"/>
+			</form>
+		);
+	}
+});
+
 var HouseMgmt = React.createClass({
 	getInitialState: function() {
 		return {
@@ -180,6 +243,7 @@ var HouseMgmt = React.createClass({
 			<div>
 				<Navbar changePage={this.setGlobalProp}/>
 				<ApartmentsBox setActiveApartment={this.setActiveApartment}/>
+				<ModifyApartment/>
 				<MakePayment ap={this.state.activeApartment}/>
 				<PaymentsHistory/>
 			</div>

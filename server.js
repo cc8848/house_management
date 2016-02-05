@@ -74,6 +74,33 @@ app.post('/api/make_payment', function(req, res) {
   });
 });
 
+app.post('/api/modify_apartment', function(req, res) {
+  fs.readFile(data_file, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+	console.log('Make payment req body:', req.body);
+//	console.log('Loaded data:', data);
+    dataObj = JSON.parse(data);
+    var newApartment = {
+		name: req.body.name,
+		number: req.body.number,
+		balanse: Number(req.body.initial_balanse),
+		debt: 0
+		// TODO add block
+    };
+	dataObj.apartments[newApartment.number] = newApartment;
+    fs.writeFile(data_file, JSON.stringify(dataObj, null, '\t'), function(err) {
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+      res.json({result: 'ok'});
+    });
+  });
+});
+
 
 app.listen(app.get('port'), function() {
   console.log('Server started: http://localhost:' + app.get('port') + '/');
