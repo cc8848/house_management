@@ -172,7 +172,7 @@ var ModifyApartment = React.createClass({
 		return {
 			name: '',
 			number: '',
-			initial_balanse: 0
+			initial_balance: 0
 		}
 	},
 	handleSetNumber: function(e){
@@ -185,14 +185,14 @@ var ModifyApartment = React.createClass({
 	},
 	handleSetInitialBalanse: function(e){
 		console.log('set init bal',e.target.value);
-		this.setState({initial_balanse: e.target.value})
+		this.setState({initial_balance: e.target.value})
 	},
 	handleSubmit: function(e) {
 		e.preventDefault();
 		var data = {
 			number: this.state.number,
 			name: this.state.name,
-			initial_balanse: this.state.initial_balanse
+			initial_balance: this.state.initial_balance
 		};
 		console.log('Send payment:', data);
 		$.ajax('/api/modify_apartment', {
@@ -202,7 +202,7 @@ var ModifyApartment = React.createClass({
 			data: data,
 			success: function(data) {
 				console.log('Adding apartment result:', data);
-				this.setState({name: '', number: '', initial_balanse: 0, result: data.result});
+				this.setState({name: '', number: '', initial_balance: 0, result: data.result});
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error(this.props.url, status, err.toString());
@@ -217,7 +217,7 @@ var ModifyApartment = React.createClass({
 				<br/>
 				Име: <input type="text" name="name" require="true" onChange={this.handleSetName}/>
 				<br/>
-				Начален Баланс:<input type="text" name="initial_balanse" require="true" onChange={this.handleSetInitialBalanse}/> лв.
+				Начален Баланс:<input type="text" name="initial_balance" require="true" onChange={this.handleSetInitialBalanse}/> лв.
 				<br/>
 				<input type="submit" value="Добави"/>
 			</form>

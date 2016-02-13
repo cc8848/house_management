@@ -95,7 +95,7 @@ app.post('/api/modify_apartment', function(req, res) {
     var newApartment = {
 		name: req.body.name,
 		number: req.body.number,
-		balanse: Number(req.body.initial_balanse),
+		balance: Number(req.body.initial_balance),
 		debt: 0
 		// TODO add block
     };
