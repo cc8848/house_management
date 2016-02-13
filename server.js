@@ -24,6 +24,15 @@ app.use(function(req, res, next) {
 });
 
 
+if(!fs.existsSync(data_file)) {
+	fs.writeFileSync(data_file, JSON.stringify({
+		"apartments": {
+		},
+		"payments": [
+		]
+	}));
+}
+
 app.get('/api/apartments', function(req, res) {
 	fs.readFile(data_file, function(err, data) {
 		if (err) {
