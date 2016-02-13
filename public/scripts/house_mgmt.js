@@ -79,14 +79,16 @@ var MakePayment = React.createClass({
 			);
 		}
 		return (
-			<form onSubmit={this.handleSubmit}>
+			<form className="mediumForm" onSubmit={this.handleSubmit}>
 				{header}
-				<span>Ап {this.props.ap.number}: {this.props.ap.name}</span>
-				<br/>
-				<span>Сума:</span>
-				<input type="text" name="amount" require="true" onChange={this.handleSetAmount}/>
-				<br/>
-				<input type="submit" value="Плати"/>
+				<div className="form-group">
+					<h3>Апaртамент {this.props.ap.number}: {this.props.ap.name}</h3>
+				</div>
+				<div className="form-group">
+					<label for="amount">Сума:</label>
+					<input id="amount" className="form-control" type="text" name="amount" require="true" onChange={this.handleSetAmount}/>
+				</div>
+				<button type="submit" className="btn btn-default">Плати</button>
 			</form>
 		);
 	}
@@ -113,16 +115,23 @@ var PaymentsHistory = React.createClass({
 	render: function() {
 		let index = 0;
 		var payments = this.state.data.map(function(it){
+			var t = new Date(it.time);
+			var tstr = t.getDay()+'.'+(t.getMonth()+1)+'.'+t.getFullYear();
 			return (
-				<li key={++index}>{JSON.stringify(it)}</li>
+				<tr key={++index}><td>{tstr}</td><td>Ап {it.number}</td><td>{it.amount} лв.</td></tr>
 			);
 		});
 		return (
 			<div>
 				<h1>Payments</h1>
-				<ul>
+				<table className="table table-striped">
+				<thead>
+					<tr><th>Дата</th><th>Апартамент</th><th>Сума</th></tr>
+				</thead>
+				<tbody>
 					{payments}
-				</ul>
+				</tbody>
+				</table>
 			</div>
 		);
 	}
@@ -211,15 +220,25 @@ var ModifyApartment = React.createClass({
 	},
 	render: function() {
 		return (
-			<form onSubmit={this.handleSubmit}>
+			<form className="mediumForm" onSubmit={this.handleSubmit}>
 				<h2>Добави нов апартамент</h2>
-				Номер: <input type="text" name="number" require="true" onChange={this.handleSetNumber}/>
+				<div className="form-group">
+					<label for="aptNum">Номер</label>
+					<input id="aptNum" className="form-control" type="text" name="number" require="true" onChange={this.handleSetNumber}/>
+				</div>
+				<div className="form-group">
+					<label for="aptName">Име</label>
+					<input id="aptName" className="form-control" type="text" name="name" require="true" onChange={this.handleSetName}/>
+				</div>
+				<div className="form-group">
+					<label for="aptInitBalance">Начален Баланс</label>
+					<div className="input-group">
+						<input id="aptInitBalance" className="form-control" type="text" name="initial_balance" require="true" onChange={this.handleSetInitialBalanse}/>
+						<div className="input-group-addon">лв.</div>
+					</div>
+				</div>
 				<br/>
-				Име: <input type="text" name="name" require="true" onChange={this.handleSetName}/>
-				<br/>
-				Начален Баланс:<input type="text" name="initial_balance" require="true" onChange={this.handleSetInitialBalanse}/> лв.
-				<br/>
-				<input type="submit" value="Добави"/>
+				<button type="submit" className="btn btn-default">Добави</button>
 			</form>
 		);
 	}
